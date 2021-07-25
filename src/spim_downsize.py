@@ -62,7 +62,7 @@ def dwnsz(pth,save_str,src):
     for i,img in enumerate(imgs):
         if i%5000==0: print(i)
         arr[i,:,:] = sitk.GetArrayFromImage(sitk.ReadImage(img)) #horizontal
-    xx,yy,zz=arr.shape
+    zz,yy,xx=arr.shape
     print("############### THE AXES ARE {},{},{}".format(zz,yy,xx))
     #switch to sagittal
     arrsag = np.swapaxes(arr,2,0)
