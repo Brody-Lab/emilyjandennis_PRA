@@ -58,6 +58,7 @@ def dwnsz(pth,save_str,src):
     atlpth = "/scratch/ejdennis/mPRA_0703.tif"
     atl = sitk.GetArrayFromImage(sitk.ReadImage(atlpth))
     atlz,atly,atlx = atl.shape #get shape, sagittal
+    print("############### THE ATLAS AXES ARE {},{},{}".format(atlz,atly,atlx))    
     #read all the downsized images
     for i,img in enumerate(imgs):
         if i%5000==0: print(i)
@@ -68,7 +69,6 @@ def dwnsz(pth,save_str,src):
     arrsag = np.swapaxes(arr,2,0)
     z,y,x = arrsag.shape
     print("############### THE NEW AXES ARE {},{},{}".format(z,y,x))
-    print((z,y,x))
     print("\n**********downsizing....heavy!**********\n")
     arrsagd = resize(arrsag, ((atlz*1.4/z),(atly*1.4/y),(atlx*1.4/x)), anti_aliasing=True)
     print('saving tiff at {}'.format(os.path.join(os.path.dirname(dst), "{}_downsized_for_atlas.tif".format(savestr))))
