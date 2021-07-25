@@ -80,8 +80,8 @@ elif stepid == 2:
 
 elif stepid == 3:
     print("stepid is 3, cell -> reg")
-    fx=os.path.join(output_src,"cell__downsized_for_atlas.tif")
-    mv=os.path.join(output_src, "reg__downsized_for_atlas.tif")
+    mv=os.path.join(output_src,"cell__downsized_for_atlas.tif")
+    fx=os.path.join(output_src, "reg__downsized_for_atlas.tif")
     out = os.path.join(elsrc, "reg_to_cell")
     if not os.path.exists(out):
         os.mkdir(out)
