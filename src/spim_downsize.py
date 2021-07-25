@@ -55,7 +55,7 @@ def dwnsz(pth,save_str,src):
     z = len(imgs)
     y,x = sitk.GetArrayFromImage(sitk.ReadImage(imgs[0])).shape
     arr = np.zeros((z,y,x))
-    atlpth = "../data/mPRA_adj.tif"
+    atlpth = "/scratch/ejdennis/mPRA_0703.tif"
     atl = sitk.GetArrayFromImage(sitk.ReadImage(atlpth))
     atlz,atly,atlx = atl.shape #get shape, sagittal
     #read all the downsized images
