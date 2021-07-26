@@ -8,6 +8,7 @@ Created on Mon Jul 20 12:04:02 2020
 
 import os, cv2, shutil, sys, imageio
 import numpy as np
+import tifffile as tif
 import multiprocessing as mp
 
 def fast_scandir(dirname):
