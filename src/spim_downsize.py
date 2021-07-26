@@ -19,7 +19,7 @@ def fast_scandir(dirname):
 
 def resize_helper(img, dst, resizef):
     print(os.path.basename(img))
-    im = imagieo.volread(img))
+    im = imageio.volread(img)
     y,x = im.shape
     yr = int(y/resizef); xr = int(x/resizef)
     im = cv2.resize(im, (xr, yr), interpolation=cv2.INTER_AREA)
