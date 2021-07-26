@@ -10,6 +10,7 @@ import os, cv2, shutil, sys, imageio
 import numpy as np
 import tifffile as tif
 import multiprocessing as mp
+from scipy.ndimage import zoom
 
 def fast_scandir(dirname):
     """ gets all folders recursively """
@@ -68,7 +69,14 @@ def dwnsz(pth,save_str,src):
     z,y,x = arrsag.shape
     print("############### THE NEW AXES ARE {},{},{}".format(z,y,x))
     print("\n**********downsizing....heavy!**********\n")
-    arrsagd = cv2.resize(arrsag, ((atlz*1.4/z),(atly*1.4/y),(atlx*1.4/x)), interpolation=cv2.INTER_AREA)
+    #arrsagd = cv2.resize(arrsag, (round(atlz*1.4),round(atly*1.4),round(atlx*1.4)), interpolation=cv2.INTER_AREA) # memory issues
+    arrsagd = zoom(arrsag,((atlz*1.4/z),(atly*1.4/y),(atlx*1.4/x)),order=1)
+
+    # conservatively chop outliers to maximize dynamic range
+    lims = np.percentile(arrsagd,(0.001,99.999))    
+    arrsagd[arrsagd>lims[1]] = lims[1]
+    arrsagd[arrsagd<lims[0]] = lims[0]
+
     print('saving tiff at {}'.format(os.path.join(os.path.dirname(dst), "{}_downsized_for_atlas.tif".format(savestr))))
     tif.imsave(os.path.join(os.path.dirname(dst), "{}_downsized_for_atlas.tif".format(savestr)), arrsagd.astype("uint16"))
 
