@@ -6,12 +6,9 @@ Created on Mon Jul 20 12:04:02 2020
 @author: wanglab
 """
 
-import os, cv2, shutil, sys
+import os, cv2, shutil, sys, imageio
 import numpy as np
-import tifffile as tif
-import SimpleITK as sitk
 import multiprocessing as mp
-from skimage.transform import resize
 
 def fast_scandir(dirname):
     """ gets all folders recursively """
@@ -22,10 +19,10 @@ def fast_scandir(dirname):
 
 def resize_helper(img, dst, resizef):
     print(os.path.basename(img))
-    im = sitk.GetArrayFromImage(sitk.ReadImage(img))
+    im = imagieo.volread(img))
     y,x = im.shape
     yr = int(y/resizef); xr = int(x/resizef)
-    im = cv2.resize(im, (xr, yr), interpolation=cv2.INTER_LINEAR)
+    im = cv2.resize(im, (xr, yr), interpolation=cv2.INTER_AREA)
     tif.imsave(os.path.join(dst, os.path.basename(img)),
                     im.astype("uint16"), compress=1)
 def get_folderstructure(dirname):
@@ -53,16 +50,16 @@ def dwnsz(pth,save_str,src):
     #now downsample to 140% of pra atlas
     imgs = [os.path.join(dst, xx) for xx in os.listdir(dst) if "tif" in xx]; imgs.sort()
     z = len(imgs)
-    y,x = sitk.GetArrayFromImage(sitk.ReadImage(imgs[0])).shape
+    y,x = imageio.volread(imgs[0]).shape
     arr = np.zeros((z,y,x))
     atlpth = "/scratch/ejdennis/mPRA_0703.tif"
-    atl = sitk.GetArrayFromImage(sitk.ReadImage(atlpth))
+    atl = imageio.volread(atlpth)
     atlz,atly,atlx = atl.shape #get shape, sagittal
     print("############### THE ATLAS AXES ARE {},{},{}".format(atlz,atly,atlx))    
     #read all the downsized images
     for i,img in enumerate(imgs):
         if i%5000==0: print(i)
-        arr[i,:,:] = sitk.GetArrayFromImage(sitk.ReadImage(img)) #horizontal
+        arr[i,:,:] = imageio.volread(img) #horizontal
     zz,yy,xx=arr.shape
     print("############### THE AXES ARE {},{},{}".format(zz,yy,xx))
     #switch to sagittal
@@ -70,7 +67,7 @@ def dwnsz(pth,save_str,src):
     z,y,x = arrsag.shape
     print("############### THE NEW AXES ARE {},{},{}".format(z,y,x))
     print("\n**********downsizing....heavy!**********\n")
-    arrsagd = resize(arrsag, ((atlz*1.4/z),(atly*1.4/y),(atlx*1.4/x)), anti_aliasing=True)
+    arrsagd = cv2.resize(arrsag, ((atlz*1.4/z),(atly*1.4/y),(atlx*1.4/x)), interpolation=cv2.INTER_AREA)
     print('saving tiff at {}'.format(os.path.join(os.path.dirname(dst), "{}_downsized_for_atlas.tif".format(savestr))))
     tif.imsave(os.path.join(os.path.dirname(dst), "{}_downsized_for_atlas.tif".format(savestr)), arrsagd.astype("uint16"))
 
