@@ -13,8 +13,8 @@ import tifffile as tif
 import numpy as np
 from utils.registration import elastix_command_line_call
 
-param_fld = "/scratch/ejdennis/rat_registration_parameter_folder"  # change if using mouse
-param_fld_affine = "/scratch/ejdennis/rat_BrainPipe/parameterfolder_affine"
+param_fld = "./elastix_params/affine_and_bspline/"  # change if using mouse
+param_fld_affine = "./elastix_params/affine/"
 atl = "/scratch/ejdennis/mPRA_0703.tif"
 #fx_mask = "/scratch/ejdennis/mPRA_padded_mask.tif"
 #mv_mask = fx_mask
