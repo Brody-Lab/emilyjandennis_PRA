@@ -17,9 +17,14 @@ param_fld = os.path.join(os.path.dirname(os.getcwd()),"data/parameter_folder_a1b
 param_fld_affine = os.path.join(os.path.dirname(os.getcwd()),"data/parameter_folder_a1b1")
 atl = os.path.join(os.path.dirname(os.getcwd()),"data/mPRA.tif")
 print("atl is {}".format(atl))
+#param_fld = "./elastix_params/affine_and_bspline/"  # change if using mouse
+#param_fld_affine = "./elastix_params/affine/"
+#atl = "/scratch/ejdennis/mPRA_0703.tif"
+#fx_mask = "/scratch/ejdennis/mPRA_padded_mask.tif"
+#mv_mask = fx_mask
 
 # takes 6 command line arguments max
-stepid = int(sys.argv[1])
+stepid = int(float(sys.argv[1]))
 src = str(sys.argv[2])  # folder to main image folder
 print("src is {}".format(src))
 
@@ -52,7 +57,7 @@ if stepid == 0:
     out = os.path.join(elsrc, "reg_to_atl")
     if not os.path.exists(out):
         os.mkdir(out)
-    params = [os.path.join(param_fld, xx) for xx in os.listdir(param_fld)]
+    params = [os.path.join(param_fld, xx) for xx in sorted(os.listdir(param_fld))]
     print("++++++++++++ {} TO {} IN {}+++++++++++".format(mv,fx,out))
 
 elif stepid == 1:
@@ -62,7 +67,7 @@ elif stepid == 1:
     out = os.path.join(elsrc, "atl_to_reg")
     if not os.path.exists(out):
         os.mkdir(out)
-    params = [os.path.join(param_fld, xx) for xx in os.listdir(param_fld)]
+    params = [os.path.join(param_fld, xx) for xx in sorted(os.listdir(param_fld))]
     # run
     print("------------------- {} TO {} IN {} ------------------".format(mv,fx,out))        
 
@@ -79,8 +84,8 @@ elif stepid == 2:
 
 elif stepid == 3:
     print("stepid is 3, cell -> reg")
-    fx=os.path.join(output_src,"cell__downsized_for_atlas.tif")
-    mv=os.path.join(output_src, "reg__downsized_for_atlas.tif")
+    mv=os.path.join(output_src,"cell__downsized_for_atlas.tif")
+    fx=os.path.join(output_src, "reg__downsized_for_atlas.tif")
     out = os.path.join(elsrc, "reg_to_cell")
     if not os.path.exists(out):
         os.mkdir(out)

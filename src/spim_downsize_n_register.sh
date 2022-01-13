@@ -2,8 +2,8 @@
 #
 #SBATCH -c 1                      # number of cores
 #SBATCH -t 10                # time (minutes)
-#SBATCH -o logs/spim_downsize_n_register_%j.out        # STDOUT #add _%a to see each array job
-#SBATCH -e logs/spim_downsize_n_register_%j.err        # STDERR #add _%a to see each array job
+#SBATCH -o ~/logs/spim_downsize_n_register_%j.out        # STDOUT #add _%a to see each array job
+#SBATCH -e ~/logs/spim_downsize_n_register_%j.err        # STDERR #add _%a to see each array job
 
 echo "In the directory: `pwd` "
 echo "As the user: `whoami` "
@@ -28,9 +28,15 @@ echo $OUT0
 OUT1=$(sbatch --dependency=afterok:${OUT0##* } spim_register.sh 0 "$1" "$2" "$3")
 echo $OUT1
 
-#register inverse
 OUT2=$(sbatch --dependency=afterok:${OUT0##* } spim_register.sh 1 "$1" "$2" "$3")
 echo $OUT2
+
+OUT3=$(sbatch --dependency=afterok:${OUT0##* } spim_register.sh 2 "$1" "$2" "$3")
+echo $OUT3
+
+OUT4=$(sbatch --dependency=afterok:${OUT0##* } spim_register.sh 3 "$1" "$2" "$3")
+echo $OUT4
+
 
 #functionality
 #go to smartspim_pipeline folder and type sbatch spim_downsize_n_register.sh [path to main image folder] [reg channel subfolder name] [cell channel subfolder name]
