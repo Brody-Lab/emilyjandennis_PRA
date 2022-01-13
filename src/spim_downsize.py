@@ -98,7 +98,7 @@ if __name__ == "__main__":
                 reg_ch = os.path.join(reg_ch,[f.name for f in os.scandir(reg_ch) if f.is_dir()][0])
             print('reg ch is {}'.format(reg_ch))
             dwnsz(reg_ch,'reg_',src)
-        if 'Ex_64' in i:
+        else :
             cell_ch=i
             while len([file for file in os.listdir(cell_ch) if '.tif' in file]) < 10:
        	       	cell_ch = os.path.join(cell_ch,[f.name for f in os.scandir(cell_ch) if f.is_dir()][0])

@@ -20,7 +20,7 @@ atl = "/scratch/ejdennis/mPRA_0703.tif"
 #mv_mask = fx_mask
 
 # takes 6 command line arguments max
-stepid = int(sys.argv[1])
+stepid = int(float(sys.argv[1]))
 src = str(sys.argv[2])  # folder to main image folder
 print("src is {}".format(src))
 
@@ -53,7 +53,7 @@ if stepid == 0:
     out = os.path.join(elsrc, "reg_to_atl")
     if not os.path.exists(out):
         os.mkdir(out)
-    params = [os.path.join(param_fld, xx) for xx in os.listdir(param_fld)]
+    params = [os.path.join(param_fld, xx) for xx in sorted(os.listdir(param_fld))]
     print("++++++++++++ {} TO {} IN {}+++++++++++".format(mv,fx,out))
 
 elif stepid == 1:
@@ -63,7 +63,7 @@ elif stepid == 1:
     out = os.path.join(elsrc, "atl_to_reg")
     if not os.path.exists(out):
         os.mkdir(out)
-    params = [os.path.join(param_fld, xx) for xx in os.listdir(param_fld)]
+    params = [os.path.join(param_fld, xx) for xx in sorted(os.listdir(param_fld))]
     # run
     print("------------------- {} TO {} IN {} ------------------".format(mv,fx,out))        
 
