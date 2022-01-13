@@ -67,7 +67,8 @@ if __name__ == '__main__':
 		cell_detection_parameter['shape_detection']['threshold'] = 130
 		print('/n params are k5, 130')
 
-	directory = str(sys.argv[2]) #e.g. os.path.join('/scratch/ejdennis/cm2_brains/j317/ch_488/')
+	directory = str(sys.argv[2]) 
+	#e.g. os.path.join('/scratch/ejdennis/cm2_brains/j317/ch_488/')
 
 	expression_raw      = 'Z<Z,4>.tif'    
 	expression_auto	= 'Z<Z,4>.tif'
@@ -117,8 +118,11 @@ if __name__ == '__main__':
 		for block_file_base in list_of_blocks:
 			block_file = os.path.join(directory,'final_blocks',block_file_base)
 			with open(block_file,'rb') as file_to_load:
-				block_result = pickle.load(file_to_load)
-				block_result_list.append(block_result)
+				try:
+					block_result = pickle.load(file_to_load)
+					block_result_list.append(block_result)
+				except:
+					print('could not load {}'.format(file_to_load))
 		final_results = np.vstack([np.hstack(r) for r in block_result_list]) # merges results into a single array
 		header = ['x','y','z'];
 		dtypes = [int, int, int];
