@@ -54,7 +54,7 @@ def dwnsz(pth,save_str,src):
     z = len(imgs)
     y,x = imageio.volread(imgs[0]).shape
     arr = np.zeros((z,y,x))
-    atlpth = "/scratch/ejdennis/mPRA_0703.tif"
+    atlpth = "/jukebox/brody/lightsheet/atlasdir/mPRA.tif"
     atl = imageio.volread(atlpth)
     atlz,atly,atlx = atl.shape #get shape, sagittal
     print("############### THE ATLAS AXES ARE {},{},{}".format(atlz,atly,atlx))    
